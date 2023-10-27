@@ -1,0 +1,21 @@
+- name: create folder
+  file:
+    state: directory 
+    path: /opt/http/files
+    recurse: true
+- name: get binary
+  get_url:
+    url: "https://github.com/TheWaWaR/simple-http-server/releases/download/v0.6.7/x86_64-unknown-linux-musl-simple-http-server"
+    dest: "/opt/http/simple-http-server"
+    timeout: 120
+    mode: 0755
+- name: Copy service template 
+  template: 
+    src: simple-http-server.service.j2  
+    dest: /etc/systemd/system/simple-http-server.service 
+- name: Enable simple-http-server 
+  ansible.builtin.systemd:
+    name: simple-http-server.service
+    state: started
+    enabled: true
+

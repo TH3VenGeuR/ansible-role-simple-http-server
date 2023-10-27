@@ -1,0 +1,18 @@
+[Unit]
+Description=Simple Http Server written in Rust
+After=network-online.target
+ 
+[Service]
+Type=simple
+
+WorkingDirectory=/opt/http/
+ExecStart=/opt/http/simple-http-server files --ip "{{ hostvars['squid01']['ansible_eth2']['ipv4']['address'] }}" 
+ 
+Restart=on-failure
+ 
+# Configures the time to wait before service is stopped forcefully.
+TimeoutStopSec=300
+ 
+[Install]
+WantedBy=multi-user.target
+
